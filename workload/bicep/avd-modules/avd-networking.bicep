@@ -174,6 +174,18 @@ params:{
 }
 */
 
+// Private DNS zones.
+module avdPrivateDnsZones '../../../carml/1.2.0/Microsoft.Network/privateDnsZones/deploy.bicep' = if (createPrivateDnsZones) {
+    scope: resourceGroup('${avdWorkloadSubsId}', '${avdNetworkObjectsRgName}')
+    name: 'AVD-Private-DNS-Zones-${time}'
+    params: {
+        name: avdRouteTableName
+        location: avdSessionHostLocation
+        tags: avdTags
+    }
+    dependsOn: []
+}
+
 // =========== //
 // Outputs //
 // =========== //
