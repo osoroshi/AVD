@@ -71,6 +71,9 @@
         "createAvdVnet": {
             "value": true
         },
+        "createPrivateDnsZones": {
+            "value": true
+        },
         "existingVnetSubnetResourceId": {
             "value": ""
         },
@@ -85,9 +88,6 @@
         },
         "customDnsIps": {
             "value": "<<customDnsIp>>"
-        },
-        "avdVnetPrivateDnsZone": {
-            "value": true
         },
         "avdVnetPrivateDnsZoneFilesId": {
             "value": "<<PrivateDnsZoneFilesId>>"

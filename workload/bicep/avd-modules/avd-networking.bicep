@@ -10,8 +10,11 @@ param avdWorkloadSubsId string
 param avdComputeObjectsRgName string
 
 // Optional parameters for the AVD session hosts virtual network.
-@description('Create new virtual network')
+@description('Required. Create new virtual network')
 param createAvdVnet bool
+
+@description('Required. Create private DNS zones')
+param createPrivateDnsZones bool
 
 @description('Optional. If new virtual network required for the AVD machines. Resource Group name for the virtual network.')
 param avdNetworkObjectsRgName string
@@ -174,16 +177,36 @@ params:{
 }
 */
 
-// Private DNS zones.
-module avdPrivateDnsZones '../../../carml/1.2.0/Microsoft.Network/privateDnsZones/deploy.bicep' = if (createPrivateDnsZones) {
+// Private DNS zones Azure files.
+module privateDnsZonesAzureFiles '../../../carml/1.2.1/Microsoft.Network/privateDnsZones/deploy.bicep' = if (createPrivateDnsZones && createAvdVnet) {
     scope: resourceGroup('${avdWorkloadSubsId}', '${avdNetworkObjectsRgName}')
-    name: 'AVD-Private-DNS-Zones-${time}'
+    name: 'Private-DNS-Files-${time}'
     params: {
-        name: avdRouteTableName
         location: avdSessionHostLocation
-        tags: avdTags
+        name: 'privatelink.file.core.windows.net'
+        virtualNetworkLinks: [
+            {
+                registrationEnabled: false
+                virtualNetworkResourceId: avdVirtualNetwork.outputs.resourceId
+            }
+        ]
     }
-    dependsOn: []
+}
+
+// Private DNS zones keyvault.
+module privateDnsZonesKeyvault '../../../carml/1.2.1/Microsoft.Network/privateDnsZones/deploy.bicep' = if (createPrivateDnsZones && createAvdVnet) {
+    scope: resourceGroup('${avdWorkloadSubsId}', '${avdNetworkObjectsRgName}')
+    name: 'Private-DNS-Files-${time}'
+    params: {
+        location: avdSessionHostLocation
+        name: 'privatelink.vaultcore.azure.net'
+        virtualNetworkLinks: [
+            {
+                registrationEnabled: false
+                virtualNetworkResourceId: avdVirtualNetwork.outputs.resourceId
+            }
+        ]
+    }
 }
 
 // =========== //
@@ -191,3 +214,5 @@ module avdPrivateDnsZones '../../../carml/1.2.0/Microsoft.Network/privateDnsZone
 // =========== //
 output avdApplicationSecurityGroupResourceId string = avdApplicationSecurityGroup.outputs.resourceId
 output avdVirtualNetworkResourceId string = avdVirtualNetwork.outputs.resourceId
+output keyvaultPrivateDnsZoneResourceId string = privateDnsZonesKeyvault.outputs.resourceId
+output privateDnsZonesAzureFilesResourceId string = privateDnsZonesAzureFiles.outputs.resourceId

@@ -106,14 +106,14 @@ param avdVnetworkSubnetAddressPrefix string = '10.10.0.0/23'
 @description('Optional. custom DNS servers IPs.')
 param customDnsIps string = 'none'
 
-@description('Optional. Use Azure private DNS zones for private endpoints. (Default: false)')
-param avdVnetPrivateDnsZone bool = false
+@description('Optional. Create private DNS zones. (Default: true)')
+param createPrivateDnsZones bool = true
 
 @description('Optional. Use Azure private DNS zones for private endpoints. (Default: false)')
-param avdVnetPrivateDnsZoneFilesId string = ''
+param existingAzureFilesPrivateDnsZone string = ''
 
 @description('Optional. Use Azure private DNS zones for private endpoints. (Default: false)')
-param avdVnetPrivateDnsZoneKeyvaultId string = ''
+param existingKeyvaultPrivateDnsZone string = ''
 
 @description('Optional. Does the hub contains a virtual network gateway. (Default: false)')
 param vNetworkGatewayOnHub bool = false
@@ -764,6 +764,7 @@ module avdNetworking 'avd-modules/avd-networking.bicep' = if (createAvdVnet) {
         avdVnetworkSubnetAddressPrefix: avdVnetworkSubnetAddressPrefix
         avdWorkloadSubsId: avdWorkloadSubsId
         dnsServers: dnsServers
+        createPrivateDnsZones: createPrivateDnsZones
         avdTags: createResourceTags ? commonResourceTags : {}
     }
     dependsOn: [
@@ -846,20 +847,14 @@ module avdWrklKeyVault '../../carml/1.2.0/Microsoft.KeyVault/vaults/deploy.bicep
             virtualNetworkRules: []
             ipRules: []
         }
-        privateEndpoints: avdVnetPrivateDnsZone ? [
+        privateEndpoints: [
             {
                 name: avdWrklKvPrivateEndpointName
                 subnetResourceId: createAvdVnet ? '${avdNetworking.outputs.avdVirtualNetworkResourceId}/subnets/${avdVnetworkSubnetName}' : existingVnetSubnetResourceId
                 service: 'vault'
                 privateDnsZoneResourceIds: [
-                    avdVnetPrivateDnsZoneKeyvaultId
+                    createPrivateDnsZones ? avdNetworking.outputs.keyvaultPrivateDnsZoneResourceId : existingKeyvaultPrivateDnsZone
                 ]
-            }
-        ] : [
-            {
-                name: avdWrklKvPrivateEndpointName
-                subnetResourceId: createAvdVnet ? '${avdNetworking.outputs.avdVirtualNetworkResourceId}/subnets/${avdVnetworkSubnetName}' : existingVnetSubnetResourceId
-                service: 'vault'
             }
         ]
         secrets: {
@@ -927,8 +922,8 @@ module deployAvdStorageAzureFiles 'avd-modules/avd-storage-azurefiles.bicep' = i
         avdStorageObjectsRgName: avdStorageObjectsRgName
         avdSubnetId: createAvdVnet ? '${avdNetworking.outputs.avdVirtualNetworkResourceId}/subnets/${avdVnetworkSubnetName}' : existingVnetSubnetResourceId
         avdVmLocalUserName: avdVmLocalUserName
-        avdVnetPrivateDnsZone: avdVnetPrivateDnsZone
-        avdVnetPrivateDnsZoneFilesId: avdVnetPrivateDnsZoneFilesId
+        avdVnetPrivateDnsZone: createPrivateDnsZones
+        avdVnetPrivateDnsZoneFilesId: createPrivateDnsZones ? avdNetworking.outputs.privateDnsZonesAzureFilesResourceId : existingAzureFilesPrivateDnsZone
         avdWorkloadSubsId: avdWorkloadSubsId
         encryptionAtHost: encryptionAtHost
         fslogixManagedIdentityResourceId: createAvdFslogixDeployment ? deployAvdManagedIdentitiesRoleAssign.outputs.fslogixManagedIdentityResourceId : ''

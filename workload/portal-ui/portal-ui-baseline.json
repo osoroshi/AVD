@@ -976,17 +976,17 @@
                             "type": "Microsoft.Common.OptionsGroup",
                             "visible": true,
                             "label": "Azure private DNS zone (Private endpoints)",
-                            "defaultValue": "Yes",
-                            "toolTip": "It is recommended to use Azure private DNS zones for private endpoint name spaces (ALZ recommended and deployed).",
+                            "defaultValue": "Create new zones",
+                            "toolTip": "Azure private DNS zones for private endpoint name spaces are required for Azure files (privatelink.file.core.windows.net) and key vault (privatelink.vaultcore.azure.net) private endpoints, existing zones can be provided or the deployment can create new ones.",
                             "constraints": {
                                 "required": true,
                                 "allowedValues": [
                                     {
-                                        "label": "Yes",
+                                        "label": "Create new zones",
                                         "value": true
                                     },
                                     {
-                                        "label": "No",
+                                        "label": "Use existing zones",
                                         "value": false
                                     }
                                 ]
@@ -995,13 +995,13 @@
                         {
                             "name": "avdVnetPrivateDnsZoneSelection",
                             "type": "Microsoft.Common.Section",
-                            "visible": "[equals(steps('avdNetwork').avdVnetPrivateDnsZone, true)]",
+                            "visible": "[equals(steps('avdNetwork').avdVnetPrivateDnsZone, false)]",
                             "elements": [
                                 {
                                     "name": "avdVnetPrivateDnsZoneFilesSelector",
                                     "type": "Microsoft.Solutions.ResourceSelector",
                                     "visible": "[equals(steps('avdSessionHosts').avdSessionHostsComputeStorageSection.avdFslogixDeployment, true)]",
-                                    "label": "File share (privatelink.file.core.windows.net)",
+                                    "label": "Azure files (privatelink.file.core.windows.net)",
                                     "resourceType": "Microsoft.Network/privateDnsZones",
                                     "constraints": {
                                         "required": true
@@ -1843,9 +1843,9 @@
                 "encryptionAtHost": "[steps('avdSessionHosts').avdSessionHostsSettingsSection.avdSessionHostEncryptionAtHost]",
                 "avdSessionHostsSize": "[if(equals(steps('avdSessionHosts').avdDeploySessionHosts, true), steps('avdSessionHosts').avdSessionHostsSettingsSection.element1, 'Standard_D2s_v4')]",
                 "createOuForStorage": "[if(equals(steps('avdSessionHosts').avdSessionHostsComputeStorageSection.avdFslogixDeployment, true), steps('avdSessionHosts').avdSessionHostsComputeStorageSection.avdIdentityDomainOuPathBool, '')]",
-                "avdVnetPrivateDnsZone": "[steps('avdNetwork').avdVnetPrivateDnsZone]",
-                "avdVnetPrivateDnsZoneFilesId": "[if(equals(steps('avdNetwork').avdVnetPrivateDnsZone, true), steps('avdNetwork').avdVnetPrivateDnsZoneSelection.avdVnetPrivateDnsZoneFilesSelector.id, '')]",
-                "avdVnetPrivateDnsZoneKeyvaultId": "[if(equals(steps('avdNetwork').avdVnetPrivateDnsZone, true), steps('avdNetwork').avdVnetPrivateDnsZoneSelection.avdVnetPrivateDnsZoneKeyvaultSelector.id, '')]",
+                "createPrivateDnsZones": "[steps('avdNetwork').avdVnetPrivateDnsZone]",
+                "existingAzureFilesPrivateDnsZone": "[if(equals(steps('avdNetwork').avdVnetPrivateDnsZone, true), steps('avdNetwork').avdVnetPrivateDnsZoneSelection.avdVnetPrivateDnsZoneFilesSelector.id, '')]",
+                "existingKeyvaultPrivateDnsZone": "[if(equals(steps('avdNetwork').avdVnetPrivateDnsZone, true), steps('avdNetwork').avdVnetPrivateDnsZoneSelection.avdVnetPrivateDnsZoneKeyvaultSelector.id, '')]",
                 "createAvdFslogixDeployment": "[steps('avdSessionHosts').avdSessionHostsComputeStorageSection.avdFslogixDeployment]",
                 "fslogixStorageSku": "[if(equals(steps('avdSessionHosts').avdSessionHostsComputeStorageSection.avdFslogixDeployment, true), steps('avdSessionHosts').avdSessionHostsComputeStorageSection.avdStorageAccountSku, 'Standard_LRS')]",
                 "avdFslogixFileShareQuotaSize": "[if(equals(steps('avdSessionHosts').avdSessionHostsComputeStorageSection.avdFslogixDeployment, true), steps('avdSessionHosts').avdSessionHostsComputeStorageSection.avdSessionHostsFslogixFileShareQuota, 1 )]",
