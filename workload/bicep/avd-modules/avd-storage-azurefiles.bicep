@@ -145,7 +145,7 @@ module fslogixStorage '../../../carml/1.2.0/Microsoft.Storage/storageAccounts/de
             shares: [
                 {
                     name: avdFslogixProfileContainerFileShareName
-                    sharedQuota: avdFslogixFileShareQuotaSize * 100 //Portal UI steps scale
+                    //sharedQuota: (avdFslogixFileShareQuotaSize * 100) //Portal UI steps scale
                 }
             ]
             protocolSettings: avdFslogixFileShareMultichannel ? {
