@@ -88,10 +88,10 @@ param fslogixStorageSku string
 param avdFslogixFileShareQuotaSize int
 
 @description('Use Azure private DNS zones for private endpoints. (Default: false)')
-param avdVnetPrivateDnsZone bool
+param createPrivateDnsZones bool
 
 @description('Use Azure private DNS zones for private endpoints. (Default: false)')
-param avdVnetPrivateDnsZoneFilesId string
+param existingAzureFilesPrivateDnsZoneResourceId string
 
 @description('Name for management virtual machine. for tools and to join Azure Files to domain.')
 param managementVmName string
@@ -156,16 +156,16 @@ module fslogixStorage '../../../carml/1.2.0/Microsoft.Storage/storageAccounts/de
                     multichannel: {
                         enabled: avdFslogixFileShareMultichannel
                     }
-                }
+               }
             } : {}
         }
-        privateEndpoints: avdVnetPrivateDnsZone ? [
+        privateEndpoints: createPrivateDnsZones ? [
             {
                 name: avdWrklStoragePrivateEndpointName
                 subnetResourceId: subnetResourceId
                 service: 'file'
                 privateDnsZoneResourceIds: [
-                    avdVnetPrivateDnsZoneFilesId
+                    existingAzureFilesPrivateDnsZoneResourceId
                 ]
             }
         ] : [
