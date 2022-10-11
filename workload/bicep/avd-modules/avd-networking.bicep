@@ -212,7 +212,7 @@ module privateDnsZonesKeyvault '../../../carml/1.2.1/Microsoft.Network/privateDn
 // =========== //
 // Outputs //
 // =========== //
-output avdApplicationSecurityGroupResourceId string = avdApplicationSecurityGroup.outputs.resourceId
-output avdVirtualNetworkResourceId string = avdVirtualNetwork.outputs.resourceId
-output keyvaultPrivateDnsZoneResourceId string = privateDnsZonesKeyvault.outputs.resourceId
-output privateDnsZonesAzureFilesResourceId string = privateDnsZonesAzureFiles.outputs.resourceId
+output avdApplicationSecurityGroupResourceId string = createAvdVnet ? avdApplicationSecurityGroup.outputs.resourceId: ''
+output avdVirtualNetworkResourceId string = createAvdVnet ? avdVirtualNetwork.outputs.resourceId: ''
+output keyvaultPrivateDnsZoneResourceId string = (createPrivateDnsZones && createAvdVnet) ? privateDnsZonesKeyvault.outputs.resourceId: ''
+output privateDnsZonesAzureFilesResourceId string = (createPrivateDnsZones && createAvdVnet) ? privateDnsZonesAzureFiles.outputs.resourceId: ''

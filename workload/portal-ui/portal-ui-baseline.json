@@ -993,6 +993,15 @@
                             }
                         },
                         {
+                            "name": "avdVnetExistingPrivateDnsZoneInfobox",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": "[equals(steps('avdNetwork').createAvdVnet, false)]",
+                            "options": {
+                                "text": "When deploying to an existing vNet, existing private DNS zones are required and they will need to be linked to the existing vNet.",
+                                "style": "Warning"
+                            }
+                        },
+                        {
                             "name": "avdVnetPrivateDnsZoneSelection",
                             "type": "Microsoft.Common.Section",
                             "visible": "[equals(steps('avdNetwork').avdVnetPrivateDnsZone, false)]",
