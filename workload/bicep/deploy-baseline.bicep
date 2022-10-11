@@ -922,8 +922,7 @@ module deployAvdStorageAzureFiles 'avd-modules/avd-storage-azurefiles.bicep' = i
         avdStorageObjectsRgName: avdStorageObjectsRgName
         avdSubnetId: createAvdVnet ? '${avdNetworking.outputs.avdVirtualNetworkResourceId}/subnets/${avdVnetworkSubnetName}' : existingVnetSubnetResourceId
         avdVmLocalUserName: avdVmLocalUserName
-        createPrivateDnsZones: createPrivateDnsZones
-        existingAzureFilesPrivateDnsZoneResourceId: createPrivateDnsZones ? avdNetworking.outputs.privateDnsZonesAzureFilesResourceId : existingAzureFilesPrivateDnsZoneResourceId
+        azureFilesPrivateDnsZoneResourceId: createPrivateDnsZones ? avdNetworking.outputs.privateDnsZonesAzureFilesResourceId : existingAzureFilesPrivateDnsZoneResourceId
         avdWorkloadSubsId: avdWorkloadSubsId
         encryptionAtHost: encryptionAtHost
         fslogixManagedIdentityResourceId: createAvdFslogixDeployment ? deployAvdManagedIdentitiesRoleAssign.outputs.fslogixManagedIdentityResourceId : ''
