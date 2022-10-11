@@ -89,10 +89,10 @@
         "customDnsIps": {
             "value": "<<customDnsIp>>"
         },
-        "avdVnetPrivateDnsZoneFilesId": {
+        "existingAzureFilesPrivateDnsZoneResourceId": {
             "value": "<<PrivateDnsZoneFilesId>>"
         },
-        "avdVnetPrivateDnsZoneKeyvaultId": {
+        "existingKeyvaultPrivateDnsZoneResourceId": {
             "value": "<<PrivateDnsZoneKeyvaultId>>"
         },
         "vNetworkGatewayOnHub": {

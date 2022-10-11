@@ -106,14 +106,14 @@ param avdVnetworkSubnetAddressPrefix string = '10.10.0.0/23'
 @description('Optional. custom DNS servers IPs.')
 param customDnsIps string = 'none'
 
-@description('Optional. Create private DNS zones. (Default: true)')
+@description('Optional. Create private DNS zones, if set to false existing private DNS zones resource IDs will be required. (Default: true)')
 param createPrivateDnsZones bool = true
 
 @description('Optional. Use Azure private DNS zones for private endpoints. (Default: false)')
-param existingAzureFilesPrivateDnsZone string = ''
+param existingAzureFilesPrivateDnsZoneResourceId string = ''
 
 @description('Optional. Use Azure private DNS zones for private endpoints. (Default: false)')
-param existingKeyvaultPrivateDnsZone string = ''
+param existingKeyvaultPrivateDnsZoneResourceId string = ''
 
 @description('Optional. Does the hub contains a virtual network gateway. (Default: false)')
 param vNetworkGatewayOnHub bool = false
@@ -853,7 +853,7 @@ module avdWrklKeyVault '../../carml/1.2.0/Microsoft.KeyVault/vaults/deploy.bicep
                 subnetResourceId: createAvdVnet ? '${avdNetworking.outputs.avdVirtualNetworkResourceId}/subnets/${avdVnetworkSubnetName}' : existingVnetSubnetResourceId
                 service: 'vault'
                 privateDnsZoneResourceIds: [
-                    createPrivateDnsZones ? avdNetworking.outputs.keyvaultPrivateDnsZoneResourceId : existingKeyvaultPrivateDnsZone
+                    createPrivateDnsZones ? avdNetworking.outputs.keyvaultPrivateDnsZoneResourceId : existingKeyvaultPrivateDnsZoneResourceId
                 ]
             }
         ]
@@ -923,7 +923,7 @@ module deployAvdStorageAzureFiles 'avd-modules/avd-storage-azurefiles.bicep' = i
         avdSubnetId: createAvdVnet ? '${avdNetworking.outputs.avdVirtualNetworkResourceId}/subnets/${avdVnetworkSubnetName}' : existingVnetSubnetResourceId
         avdVmLocalUserName: avdVmLocalUserName
         avdVnetPrivateDnsZone: createPrivateDnsZones
-        avdVnetPrivateDnsZoneFilesId: createPrivateDnsZones ? avdNetworking.outputs.privateDnsZonesAzureFilesResourceId : existingAzureFilesPrivateDnsZone
+        avdVnetPrivateDnsZoneFilesId: createPrivateDnsZones ? avdNetworking.outputs.privateDnsZonesAzureFilesResourceId : existingAzureFilesPrivateDnsZoneResourceId
         avdWorkloadSubsId: avdWorkloadSubsId
         encryptionAtHost: encryptionAtHost
         fslogixManagedIdentityResourceId: createAvdFslogixDeployment ? deployAvdManagedIdentitiesRoleAssign.outputs.fslogixManagedIdentityResourceId : ''

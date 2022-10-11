@@ -196,7 +196,7 @@ module privateDnsZonesAzureFiles '../../../carml/1.2.1/Microsoft.Network/private
 // Private DNS zones keyvault.
 module privateDnsZonesKeyvault '../../../carml/1.2.1/Microsoft.Network/privateDnsZones/deploy.bicep' = if (createPrivateDnsZones && createAvdVnet) {
     scope: resourceGroup('${avdWorkloadSubsId}', '${avdNetworkObjectsRgName}')
-    name: 'Private-DNS-Files-${time}'
+    name: 'Private-DNS-Keyvault-${time}'
     params: {
         location: avdSessionHostLocation
         name: 'privatelink.vaultcore.azure.net'
