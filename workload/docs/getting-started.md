@@ -23,7 +23,8 @@ Prior to deploying, you need to ensure you have met the following prerequisites:
 - A set of new subscriptions has been created for Azure Virtual Desktop. We recommend two subscriptions, but a single subscription can be specified during deployment.
 - The user or service principal must have rights at the tenant root as described here: [EnterpriseScale-Setup](https://github.com/Azure/Enterprise-Scale/blob/main/docs/EnterpriseScale-Setup-azure.md)
 - The [Microsoft.DesktopVirtualization](https://docs.microsoft.com/azure/virtual-desktop/create-host-pools-azure-marketplace?tabs=azure-portal#final-requirements) resource provider must be registered in subscription(s) to be used for deployment.
-- You will need the ObjectId of the **Windows Virtual Desktop** Enterprise Application (with Application Id **9cdead84-a844-4324-93f2-b2e6bb768d07**). This ObjectId is unique for each tenant and is used to give permissions for the [Start VM on Connect](https://docs.microsoft.com/azure/virtual-desktop/start-virtual-machine-connect) feature.
+- The [Microsoft.DesktopVirtualization](https://docs.microsoft.com/azure/virtual-desktop/create-host-pools-azure-marketplace?tabs=azure-portal#final-requirements) resource provider must be registered in subscription(s) to be used for deployment.
+- You will need the ObjectId of the **Azure Virtual Desktop** ( can also be displayed as Windows Virtual Desktop) Enterprise Application (with Application Id **9cdead84-a844-4324-93f2-b2e6bb768d07**). This ObjectId is unique for each tenant and is used to give permissions for the [Start VM on Connect](https://docs.microsoft.com/azure/virtual-desktop/start-virtual-machine-connect) feature.
 
 ## Planning
 

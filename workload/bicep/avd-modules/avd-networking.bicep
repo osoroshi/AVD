@@ -182,7 +182,7 @@ module privateDnsZonesAzureFiles '../../../carml/1.2.1/Microsoft.Network/private
     scope: resourceGroup('${avdWorkloadSubsId}', '${avdNetworkObjectsRgName}')
     name: 'Private-DNS-Files-${time}'
     params: {
-        location: avdSessionHostLocation
+        location: 'global'
         name: 'privatelink.file.core.windows.net'
         virtualNetworkLinks: [
             {
@@ -198,7 +198,7 @@ module privateDnsZonesKeyvault '../../../carml/1.2.1/Microsoft.Network/privateDn
     scope: resourceGroup('${avdWorkloadSubsId}', '${avdNetworkObjectsRgName}')
     name: 'Private-DNS-Keyvault-${time}'
     params: {
-        location: avdSessionHostLocation
+        location: 'global'
         name: 'privatelink.vaultcore.azure.net'
         virtualNetworkLinks: [
             {
