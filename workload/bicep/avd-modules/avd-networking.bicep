@@ -37,6 +37,9 @@ param vNetworkGatewayOnHub bool
 @description('Existing hub virtual network for peering.')
 param existingHubVnetResourceId string
 
+@description('Optional. Deploy Fslogix setup.')
+param createAvdFslogixDeployment bool
+
 @description('VNet peering name for AVD VNet to vHub.')
 param avdVnetworkPeeringName string
 
@@ -178,7 +181,7 @@ params:{
 */
 
 // Private DNS zones Azure files.
-module privateDnsZonesAzureFiles '../../../carml/1.2.1/Microsoft.Network/privateDnsZones/deploy.bicep' = if (createPrivateDnsZones && createAvdVnet) {
+module privateDnsZonesAzureFiles '../../../carml/1.2.1/Microsoft.Network/privateDnsZones/deploy.bicep' = if (createPrivateDnsZones && createAvdVnet && createAvdFslogixDeployment) {
     scope: resourceGroup('${avdWorkloadSubsId}', '${avdNetworkObjectsRgName}')
     name: 'Private-DNS-Files-${time}'
     params: {

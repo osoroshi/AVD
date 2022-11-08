@@ -993,6 +993,16 @@
                             }
                         },
                         {
+                            "name": "avdVnetNewPrivateDnsZoneInfobox",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": "[equals(steps('avdNetwork').avdVnetPrivateDnsZone, true)]",
+                            "options": {
+                                "text": "When using custom DNS servers, new private DNS zones will need to be linked to hub vNet and conditional forwarders configured on the custom DNS servers.",
+                                "uri": "https://learn.microsoft.com/azure/private-link/private-endpoint-dns",
+                                "style": "Info"
+                            }
+                        },
+                        {
                             "name": "avdVnetExistingPrivateDnsZoneInfobox",
                             "type": "Microsoft.Common.InfoBox",
                             "visible": "[equals(steps('avdNetwork').createAvdVnet, false)]",
@@ -1026,16 +1036,6 @@
                                     }
                                 }
                             ]
-                        },
-                        {
-                            "name": "avdVnetPeeringInfoBox",
-                            "type": "Microsoft.Common.InfoBox",
-                            "visible": "[equals(steps('avdNetwork').createAvdVnet, true)]",
-                            "options": {
-                                "text": "vNet peering will be created to existing vNet hub with access to identity and DNS services .",
-                                "uri": "https://docs.microsoft.com/azure/architecture/example-scenario/wvd/windows-virtual-desktop?context=/azure/virtual-desktop/context/context",
-                                "style": "info"
-                            }
                         },
                         {
                             "name": "avdHubVnetPeering",
@@ -1110,6 +1110,16 @@
                                                 "value": false
                                             }
                                         ]
+                                    }
+                                },
+                                {
+                                    "name": "avdVnetPeeringInfoBox",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": "[equals(steps('avdNetwork').createAvdVnet, true)]",
+                                    "options": {
+                                        "text": "vNet peering will be created to existing vNet hub with access to identity and DNS services .",
+                                        "uri": "https://docs.microsoft.com/azure/architecture/example-scenario/wvd/windows-virtual-desktop?context=/azure/virtual-desktop/context/context",
+                                        "style": "info"
                                     }
                                 }
                             ]

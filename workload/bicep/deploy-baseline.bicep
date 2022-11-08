@@ -762,6 +762,7 @@ module avdNetworking 'avd-modules/avd-networking.bicep' = if (createAvdVnet) {
         existingHubVnetResourceId: existingHubVnetResourceId
         avdSessionHostLocation: avdSessionHostLocation
         avdVnetworkSubnetAddressPrefix: avdVnetworkSubnetAddressPrefix
+        createAvdFslogixDeployment: createAvdFslogixDeployment
         avdWorkloadSubsId: avdWorkloadSubsId
         dnsServers: dnsServers
         createPrivateDnsZones: createPrivateDnsZones
