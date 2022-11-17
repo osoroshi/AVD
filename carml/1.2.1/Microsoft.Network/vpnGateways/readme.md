@@ -22,12 +22,14 @@ This module deploys VPN Gateways.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the VPN gateway. |
 | `virtualHubResourceId` | string | The resource ID of a virtual Hub to connect to. Note: The virtual Hub and Gateway must be deployed into the same location. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `bgpSettings` | object | `{object}` |  | BGP settings details. |
@@ -177,6 +179,7 @@ _None_
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
 <h3>Example 1: Min</h3>
@@ -187,7 +190,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-vpnGateways'
+  name: '${uniqueString(deployment().name)}-VpnGateways'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-vpngw-min-001'
@@ -230,7 +233,7 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
 
 ```bicep
 module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-vpnGateways'
+  name: '${uniqueString(deployment().name)}-VpnGateways'
   params: {
     // Required parameters
     name: '<<namePrefix>>-az-vpngw-x-001'

@@ -20,12 +20,14 @@ This module deploys an Alert based on Activity Log.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `conditions` | array | The condition that will cause this alert to activate. Array of objects. |
 | `name` | string | The name of the alert. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` | The list of actions to take when alert triggers. |
@@ -401,9 +403,10 @@ _None_
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
    >**Note**: The name of each example is based on the name of the file from which it is taken.
+
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -411,7 +414,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-activityLogAlerts'
+  name: '${uniqueString(deployment().name)}-test-ialacom'
   params: {
     // Required parameters
     conditions: [
@@ -428,23 +431,24 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
         field: 'operationName'
       }
     ]
-    name: '<<namePrefix>>-az-ala-x-001'
+    name: '<<namePrefix>>ialacom001'
     // Non-required parameters
     actions: [
       {
-        actionGroupId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001'
+        actionGroupId: '<actionGroupId>'
       }
     ]
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
     scopes: [
-      '/subscriptions/<<subscriptionId>>'
+      '<id>'
     ]
   }
 }
@@ -480,13 +484,13 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
       ]
     },
     "name": {
-      "value": "<<namePrefix>>-az-ala-x-001"
+      "value": "<<namePrefix>>ialacom001"
     },
     // Non-required parameters
     "actions": {
       "value": [
         {
-          "actionGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001"
+          "actionGroupId": "<actionGroupId>"
         }
       ]
     },
@@ -494,15 +498,16 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
     },
     "scopes": {
       "value": [
-        "/subscriptions/<<subscriptionId>>"
+        "<id>"
       ]
     }
   }
